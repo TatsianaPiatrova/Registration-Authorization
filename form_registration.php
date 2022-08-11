@@ -78,7 +78,12 @@
         });
 
         $(document).on("click", "#form_login", function(){
-            showLoginPage();
+            $.post("validate.php").done(function(result) {
+                showHomePage();
+            })
+            .fail(function(result){
+                showLoginPage();
+            });
         });
 
         function showLoginPage(){
