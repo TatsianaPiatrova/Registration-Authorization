@@ -16,7 +16,6 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
           <a class="nav-item nav-link" href="#" id="home">Домашняя страница</a>
-          <a class="nav-item nav-link" href="#" id="update_account">Учетная запись</a>
           <a class="nav-item nav-link" href="#" id="logout">Выход</a>
           <a class="nav-item nav-link" href="#" id="form_login">Вход</a>
           <a class="nav-item nav-link" href="#" id="sign_up">Регистрация</a>

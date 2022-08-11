@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
     include_once 'header.php';
 ?>
 
@@ -57,56 +57,29 @@
 
         $(document).on("submit", "#sign_up_form", function(){
 
-        var sign_up_form=$(this);
-        var form_data=JSON.stringify(sign_up_form.serializeObject());
-
-        $.ajax({
-            url: "create_user.php",
-            type : "POST",
-            contentType : "application/json",
-            data : form_data,
-            success : function(result) {
-                $("#response").html('<div class="alert alert-success">Регистрация завершена успешно. Пожалуйста, войдите.</div>');
-                sign_up_form.find("input").val("");
-            },
-            error: function(xhr, resp, text){
-                $("#response").html('<div class="alert alert-danger">Невозможно зарегистрироваться. Пожалуйста, свяжитесь с администратором.</div>');
-            }
-        });
-
-        return false;
-        });
-
-        $(document).on("click", "#form_login", function(){
-            showLoginPage();
-        });
-
-        $(document).on("submit", "#login_form", function(){
-
-            var login_form=$(this);
-            var form_data=JSON.stringify(login_form.serializeObject());
+            var sign_up_form=$(this);
+            var form_data=JSON.stringify(sign_up_form.serializeObject());
 
             $.ajax({
-                url: "login.php",
+                url: "create_user.php",
                 type : "POST",
                 contentType : "application/json",
                 data : form_data,
-                success : function(result){
-                    showHomePage();
-                    $("#response").html("<div class=\"alert alert-success\">Успешный вход в систему.</div>");
+                success : function(result) {
+                    $("#response").html('<div class="alert alert-success">Регистрация завершена успешно. Пожалуйста, войдите.</div>');
+                    sign_up_form.find("input").val("");
                 },
                 error: function(xhr, resp, text){
-                    $("#response").html("<div class=\"alert alert-danger\">Ошибка входа. Email или пароль указан неверно.</div>");
-                    login_form.find("input").val("");
+                    $("#response").html('<div class="alert alert-danger">Невозможно зарегистрироваться. Пожалуйста, свяжитесь с администратором.</div>');
                 }
             });
 
             return false;
         });
 
-        function clearResponse() {
-            $("#response").html("");
-        }
+        $(document).on("click", "#form_login", function(){
+            showLoginPage();
+        });
 
         function showLoginPage(){
             var html = `
@@ -124,11 +97,37 @@
 
                     <button type="submit" class="btn btn-primary">Войти</button>
                 </form>
-                `;
-            $("#content").html(html);
+                `;            
             clearResponse();
+            $("#content").html(html);
             showLoggedOutMenu();
         }
+
+        $(document).on("submit", "#login_form", function(){
+
+            var login_form=$(this);
+            var form_data=JSON.stringify(login_form.serializeObject());
+
+            $.ajax({
+                url: "login.php",
+                type : "POST",
+                contentType : "application/json",
+                data : form_data,
+                success : function(result){
+                    showHomePage();
+                    $("#response").html('<div class="alert alert-success">Успешный вход в систему.</div>');
+                },
+                error: function(xhr, resp, text){
+                    $("#response").html('<div class="alert alert-danger">Ошибка входа. Login или пароль указан неверно.</div>');
+                    login_form.find("input").val("");
+                }
+            });
+            return false;
+        });
+
+        function clearResponse() {
+            $("#response").html("");
+        }  
 
         function showLoggedOutMenu(){
             $("#form_login, #sign_up").show();
@@ -141,27 +140,42 @@
         });
 
         function showHomePage() {
-            var html = `
-                <div class="card">
-                    <div class="card-header">Добро пожаловать!</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Вы вошли в систему.</h5>
-                        <p class="card-text">Вы не сможете получить доступ к домашней странице и страницам учетной записи, если вы не вошли в систему.</p>
+            $.post("validate.php").done(function(result) {
+                var html = `
+                    <div class="card">
+                        <div class="card-header">Добро пожаловать!</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Вы вошли в систему.</h5>
+                            <?php
+                                echo '<p class="card-text">Hello, '. $_SESSION['user_name'] .'!</p>'
+                            ?>
+                        </div>
                     </div>
-                </div>
-            `;
-            $("#content").html(html);
-            showLoggedInMenu();
-        .fail(function(result){
-            showLoginPage();
-            $("#response").html('<div class="alert alert-danger">Пожалуйста войдите, чтобы получить доступ к домашней станице</div>');
-        });
+                `;
+
+                $("#content").html(html);
+                showLoggedInMenu();
+            })
+            .fail(function(result){
+                showLoginPage();
+                $("#response").html('<div class="alert alert-danger">Пожалуйста войдите, чтобы получить доступ к домашней станице</div>');
+            });
         }
 
         function showLoggedInMenu(){
             $("#form_login, #sign_up").hide();
             $("#logout").show();
         }
+
+        $(document).on("click", "#logout", function(){            
+            $.post("logout.php").done(function(result) {
+                showLoginPage();
+                $("#response").html('<div class="alert alert-info">Вы вышли из системы.</div>');
+            })
+            .fail(function(result){
+                $("#response").html('<div class="alert alert-danger">Ошибка выхода</div>');
+            });            
+        });
 
 
         $.fn.serializeObject = function(){

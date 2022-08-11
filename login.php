@@ -17,7 +17,22 @@
 
     $data = json_decode(file_get_contents("php://input"));
 
-    $user->email = $data->email;
-    $email_exists = $user->emailExists();
+    $user->login = $data->login;
+    $user_exists = $user->userExist();    
+
+    if ($user_exists && password_verify($data->password, $user->password)){
+
+        setcookie("login", $user->login, time()+84500, "/");
+
+        $_SESSION['user_name'] = $user->name;   
+
+        http_response_code(200); 
+        echo json_encode(array("message" => "Успешно!"));
+
+    }
+    else{
+        http_response_code(401);
+        echo json_encode(array("message" => "Ошибка входа."));
+    }   
 
 ?>

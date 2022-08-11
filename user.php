@@ -32,6 +32,9 @@
             for ($i=0; $i<count($data); $i++){
                 if (strcmp($this->login, $data[$i]->login) === 0){
                     $this->id = $i;
+                    $this->name = $data[$i]->name;
+                    $this->email = $data[$i]->email;
+                    $this->password = $data[$i]->password;
                     return true;
                  }
             }

@@ -16,13 +16,15 @@
 
         function create($newData){
             $data = $this->read();
-            for ($i = 0; $i < count($data); $i++){
-                if (strcmp($newData['login'], $data[$i]->login) === 0)
-                    return false;
-            }
-            for ($i = 0; $i < count($data); $i++){
-                if(strcmp($newData['email'], $data[$i]->email) === 0)                       
-                    return false;
+            if (!empty($data)){
+                for ($i = 0; $i < count($data); $i++){
+                    if (strcmp($newData['login'], $data[$i]->login) === 0)
+                        return false;
+                }
+                for ($i = 0; $i < count($data); $i++){
+                    if(strcmp($newData['email'], $data[$i]->email) === 0)                       
+                        return false;
+                }
             }
             $data[] = $newData;
             $json = json_encode($data);
