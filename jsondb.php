@@ -37,12 +37,32 @@
             return $data;
         } 
 
-        function delete(){
-            
+        function delete($id){
+            $data = $this->read();
+            if (!empty($data)){
+                unset($data[$id]);
+                $json = json_encode($data);
+                file_put_contents($this->filename, $json);
+                return true;
+            }
+            else return false;
         }
 
-        function update(){
-            
+        function update($updateData){
+            $data = $this->read();
+            if (!empty($data)){
+                for ($i = 0; $i < count($data); $i++){
+                    if($updateData['id'] === $i){
+                        $data[$i]->login = $updateData['login'];
+                        $data[$i]->name = $updateData['name'];
+                        $data[$i]->email = $updateData['email'];
+                    }
+                }
+                $json = json_encode($data);
+                file_put_contents($this->filename, $json);
+                return true;
+            }
+            else return false;
         }
     }
 
