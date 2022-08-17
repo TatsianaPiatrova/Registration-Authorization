@@ -27,7 +27,7 @@
         $_SESSION['user_name'] = $user->name;   
 
         http_response_code(200); 
-        echo json_encode(array("message" => "Успешно!"));
+        echo json_encode(array("message" => "Успешно!", "name" => $user->name));
 
     }
     else{
@@ -36,3 +36,4 @@
     }   
 
 ?>
+

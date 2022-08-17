@@ -7,3 +7,7 @@ body {
 #logout{ 
     display:none; 
 }
+.error{
+    color: red;
+    font-size: 12px;
+}

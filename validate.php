@@ -1,5 +1,6 @@
 <?php
 
+    session_start();
     if (isset($_POST)){
         if(isset($_COOKIE['login'])){
             $user = new User();
@@ -17,9 +18,5 @@
             http_response_code(401);
             echo json_encode(array("message" => "Ошибка входа."));
         }  
-    }
-    else{
-        http_response_code(401);
-        echo json_encode(array("message" => "Ошибка входа."));
-    }  
+    } 
 ?>
