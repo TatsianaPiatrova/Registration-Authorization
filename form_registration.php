@@ -76,6 +76,13 @@
             if(login.length < 6){
                 $('#login').after('<span class="error">Логин должен содержать минимум 6 символов</span>');
                 flag = false;
+            } else {
+                var regEx = /^[0-9a-zA-Z]/;
+                var validLogin = regEx.test(login);
+                if (!validLogin) {
+                    $('#login').after('<span class="error">Введите правильный логин</span>');
+                    flag = false;
+                }
             }
 
             if(name.length < 2){
