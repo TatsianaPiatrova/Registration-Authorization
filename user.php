@@ -13,10 +13,10 @@
 
         function create() {
         
-            $this->login=htmlspecialchars(strip_tags($this->login));
-            $this->name=htmlspecialchars(strip_tags($this->name));
-            $this->email=htmlspecialchars(strip_tags($this->email));
-            $this->password=htmlspecialchars(strip_tags($this->password));
+            $this->login = htmlspecialchars(strip_tags($this->login));
+            $this->name = htmlspecialchars(strip_tags($this->name));
+            $this->email = htmlspecialchars(strip_tags($this->email));
+            $this->password = htmlspecialchars(strip_tags($this->password));
         
             $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
             $this->password = $password_hash;

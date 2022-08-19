@@ -22,6 +22,7 @@
 
     jQuery(function ($) {
 
+        //если нажата кнопка Регистрация
         $(document).on("click", "#sign_up", function () {
 
             var html = `
@@ -60,16 +61,16 @@
             $("#content").html(html);
         });
 
+        //если нажата кнопка Зарегистрироваться
         $(document).on("submit", "#sign_up_form", function(){
             
+            //валидация формы
             var login = $('#login').val();
             var name = $('#name').val();
             var email = $('#email').val();
             var password = $('#password').val();
             var confirmPassword = $('#confirm_password').val();
             var flag = true;
-
-            console.log(flag);
 
             $(".error").remove();
 
@@ -127,8 +128,7 @@
                 flag = false;
             }
 
-            console.log(flag);
-
+            //если все поля валидны, то отправляем данные
             if (flag){
                 var sign_up_form=$(this);
                 var form_data=JSON.stringify(sign_up_form.serializeObject());
@@ -150,7 +150,10 @@
             return false;
         });
 
+        //если наата кнопка Вход
         $(document).on("click", "#form_login", function(){
+            //проверка, вышел ли предыдущий пользователь, если нет, то отображаем домашнюю страницу с приветствием
+            //иначе отображаем страницу Вход
             $.post("validate.php").done(function(result) {
                 showHomePage();
             })
@@ -181,6 +184,7 @@
             showLoggedOutMenu();
         }
 
+        //если нажата кнопка Войти
         $(document).on("submit", "#login_form", function(){
 
             var login_form=$(this);
@@ -218,6 +222,7 @@
             clearResponse();
         });
 
+        //функция для отображения домашней страницы
         function showHomePage() {
             $.post("validate.php").done(function(result) {
                 var html = `
@@ -243,7 +248,8 @@
             $("#form_login, #sign_up").hide();
             $("#logout").show();
         }
-
+        
+        //если нажата кнопка Выйти
         $(document).on("click", "#logout", function(){        
             $.post("logout.php").done(function(result) {
                 showLoginPage();
